@@ -1,0 +1,4 @@
+{%- set listType = (node.listData.type == constant('League\\CommonMark\\Extension\\CommonMark\\Node\\Block\\ListBlock::TYPE_BULLET')) ? 'ul' : 'ol' -%}
+<{{ listType }}{{ node|render_attributes }}>
+{{ node|render_children -}}
+</{{ listType }}>

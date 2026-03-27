@@ -1,0 +1,9 @@
+<code{{ node|render_attributes }}>
+{%- if configuration.get('html_input') == 'escape' -%}
+{{ node.literal|escape|unescape_single_quotes }}
+{%- elseif configuration.get('html_input') == 'strip' -%}
+{{ node.literal|striptags }}
+{%- else -%}
+{{ node.literal }}
+{%- endif -%}
+</code>

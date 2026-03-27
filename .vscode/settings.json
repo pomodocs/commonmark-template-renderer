@@ -1,0 +1,5 @@
+{
+    "intelephense.environment.includePaths": [
+        "/home/cristiano/Github/pomodocs/commonmark-template-renderer/vendor"
+    ]
+}
