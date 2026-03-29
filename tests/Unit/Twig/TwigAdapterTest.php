@@ -46,7 +46,7 @@ it('should render a fenced code block', function () {
     $node->setInfo('php');
     $rendered = $this->twig->renderNode($node);
     $expected = <<<HTML
-<pre><code class="language-php"><?php declare(strict_types=1);
+<pre><code class="language-php">&lt;?php declare(strict_types=1);
 </code></pre>
 HTML;
     expect($rendered)->toBe($expected);

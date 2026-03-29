@@ -17,13 +17,13 @@
   "require": {
     "php": ">=8.3",
     "league/commonmark": "^2.7",
-    "twig/twig": "^3.21",
     "phootwork/lang": "^3.2"
   },
   "require-dev": {
-    "nette/utils": "^4.0",
+    "twig/twig": "^3.21",
     "pestphp/pest": "^4.4",
-    "mikey179/vfsstream": "^1.6"
+    "mikey179/vfsstream": "^1.6",
+    "pomodocs/commonmark-alert": "^0.7.0"
   },
   "scripts": {
     "analytics": "tools/phpstan analyze",
@@ -53,5 +53,12 @@
     "allow-plugins": {
       "pestphp/pest-plugin": true
     }
+  },
+  "suggest": {
+    "twig/twig": "To render templates using Twig",
+    "latte/latte": "To render templates using Latte (not supported yet)",
+    "league/plates": "To render templates using Plates (not supported yet)",
+    "eftec/bladeone": "To render templates using Blade (not supported yet)",
+    "pomodocs/commonmark-alert": "To render alert boxes in Github blockquote style"
   }
 }

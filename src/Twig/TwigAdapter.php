@@ -95,12 +95,17 @@ final class TwigAdapter implements AdapterInterface
         foreach ($node->children() as $child) {
             // Force tight lists.
             if ($node instanceof ListItem && $child instanceof Paragraph) {
-                $child = $child->firstChild();
+                $output .= $this->renderChildren($child);
+            } else {
+                $output .= $this->renderNode($child);
             }
-            $output .= $this->renderNode($child);
+
+            if ($child instanceof ListItem) {
+                $output .= $this->getSeparator($child);
+            }
         }
 
-        return $output;
+        return rtrim($output);
     }
 
     /**
@@ -197,7 +202,7 @@ final class TwigAdapter implements AdapterInterface
      */
     private function normalizeFencedCode(FencedCode $node): FencedCode
     {
-        if ($node->getInfo() !== null) {
+        if ($node->getInfo() !== "") {
             $node->data->append("attributes/class", "language-{$node->getInfo()}");
         }
 

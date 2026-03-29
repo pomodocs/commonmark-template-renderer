@@ -11,12 +11,10 @@ declare(strict_types=1);
 
 namespace PomoDocs\CommonMark\TwigRenderer\Tests\Functional;
 
+use League\CommonMark\CommonMarkConverter;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
-use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
-use League\CommonMark\GithubFlavoredMarkdownConverter;
 use PomoDocs\CommonMark\TemplateRenderer\TemplateConverter;
-use PomoDocs\CommonMark\TemplateRenderer\TemplateRendererExtension;
 
 beforeEach(function () {
     $env = new Environment([
@@ -30,11 +28,9 @@ beforeEach(function () {
         ]
     );
     $env->addExtension(new CommonMarkCoreExtension());
-    $env->addExtension(new GithubFlavoredMarkdownExtension());
-    $env->addExtension(new TemplateRendererExtension());
         
     $this->twigConverter = new TemplateConverter($env);
-    $this->stdConverter = new GithubFlavoredMarkdownConverter(['html_input' => 'escape']);
+    $this->stdConverter = new CommonMarkConverter(['html_input' => 'escape']);
 });
 
 it('renders a simple markdown string with the Twig converter', function () {
@@ -68,11 +64,32 @@ it('renders a markdown string with a separator part for inline nodes', function 
     expect($this->twigConverter->convert($markdown)->getContent())->toBe("<p>This is <strong>bold</strong> text.</p>\n");
 });
 
-it('renders a standard markdown file', function (string $markdown) {
+it('renders a standard markdown file', function () {
+    $markdown = file_get_contents(__DIR__ . '/../../Datasets/StandardMarkdown.md');
     $expected = $this->stdConverter->convert($markdown)->getContent();
     $actual = $this->twigConverter->convert($markdown)->getContent();
-    expect($expected)->toBe($actual);
     
-})->with([file_get_contents(__DIR__ . '/../../Datasets/StandardMarkdown.md')]);
+    expect($expected)->toBe($actual);  
+});
+
+it('renders a commonmark markdown file', function () {
+    $markdown = file_get_contents(__DIR__ . '/../../Datasets/CommonMark.md');
+    $expected = $this->stdConverter->convert($markdown)->getContent();
+    $actual = $this->twigConverter->convert($markdown)->getContent();
+    
+    expect($expected)->toBe($actual);  
+});
+
+it('renders a test markdown string with the Twig converter', function () {
+    $markdown = "### 2.3 Block Quotes
 
 
+> This is a block quote
+> spanning multiple lines
+
+";
+    $rendered = $this->twigConverter->convert($markdown)->getContent();
+    $expected = $this->stdConverter->convert($markdown)->getContent();
+    
+    expect($rendered)->toBe($expected);
+});

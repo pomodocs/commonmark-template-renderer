@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace PomoDocs\CommonMark\TemplateRenderer;
 
 use League\CommonMark\ConverterInterface;
-use League\CommonMark\Environment\EnvironmentInterface;
+use League\CommonMark\Environment\Environment;
 use League\CommonMark\Exception\CommonMarkException;
 use League\CommonMark\MarkdownConverter;
 use League\CommonMark\Output\RenderedContentInterface;
@@ -24,8 +24,9 @@ final class TemplateConverter implements ConverterInterface
     private MarkdownParserInterface $markdownParser;
     private TemplateRenderer $templateRenderer;
 
-    public function __construct(EnvironmentInterface $environment)
+    public function __construct(Environment $environment)
     {
+        $environment->addExtension(new TemplateRendererExtension());
         $this->markdownParser = new MarkdownParser($environment);
         $this->templateRenderer   = new TemplateRenderer($environment);
     }
