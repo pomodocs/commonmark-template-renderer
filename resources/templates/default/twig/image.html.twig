@@ -1,2 +1,2 @@
-<img src="{{ node.url }}"{% if node.title %} title="{{ node.title }}"{% endif %} {{ node|render_attributes }}
-{%- if node.hasChildren %} alt="{{ node|render_children }}"{% endif -%}>
+<img src="{{ node.url }}"{%- if node.title %} title="{{ node.title }}"{% endif -%} {{ node|render_attributes }}
+{%- if node.hasChildren %} alt="{{ node|render_children }}"{% endif %} />

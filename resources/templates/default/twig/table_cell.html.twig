@@ -1,0 +1,2 @@
+{%- set cellType = (node.type == constant('League\\CommonMark\\Extension\\Table\\TableCell::TYPE_HEADER')) ? 'th' : 'td' -%}
+<{{ cellType }}{{ node|render_attributes }}>{{ node|render_children }}</{{ cellType }}>

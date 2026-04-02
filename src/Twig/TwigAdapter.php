@@ -11,9 +11,12 @@ declare(strict_types=1);
 
 namespace PomoDocs\CommonMark\TemplateRenderer\Twig;
 
+use Attribute;
+use League\CommonMark\Extension\Attributes\Util\AttributesHelper;
 use League\CommonMark\Extension\CommonMark\Node\Block\FencedCode;
 use League\CommonMark\Extension\CommonMark\Node\Block\ListItem;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
+use League\CommonMark\Extension\Table\TableCell;
 use League\CommonMark\Node\Block\Document;
 use League\CommonMark\Node\Block\Paragraph;
 use League\CommonMark\Node\Node;
@@ -62,7 +65,7 @@ final class TwigAdapter implements AdapterInterface
     /**
      * Set the Twig instance to be used by the renderer.
      * This method is used to set a custom, already configured Twig instance to be used by the renderer.
-     * It's useful when the user wants to use a custom Twig configuration or an instance taken from a di container.
+     * It's useful when we need a custom Twig configuration or an instance taken from a di container.
      * It adds the necessary filters to the Twig instance.
      * 
      * @param Environment $engine The Twig instance.
@@ -175,6 +178,7 @@ final class TwigAdapter implements AdapterInterface
         return match(true) {
             $node instanceof Link => $this->normalizeLink($node),
             $node instanceof FencedCode => $this->normalizeFencedCode($node),
+            $node instanceof TableCell => $this->normalizeTableCell($node),
             default => $node
         };
     }
@@ -203,7 +207,22 @@ final class TwigAdapter implements AdapterInterface
     private function normalizeFencedCode(FencedCode $node): FencedCode
     {
         if ($node->getInfo() !== "") {
-            $node->data->append("attributes/class", "language-{$node->getInfo()}");
+            $node->data->append('attributes/class', "language-{$node->getInfo()}");
+        }
+
+        return $node;
+    }
+
+    /**
+     * Normalize TableCell node.
+     * 
+     * @param TableCell $node
+     * @return TableCell
+     */
+    private function normalizeTableCell(TableCell $node): TableCell
+    {
+        if ($node->getAlign() !== null) {
+            $node->data->append('attributes/align', $node->getAlign());
         }
 
         return $node;

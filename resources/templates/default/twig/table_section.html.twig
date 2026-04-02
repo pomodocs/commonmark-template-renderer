@@ -1,0 +1,4 @@
+{%- set sectionType = (node.type == constant('League\\CommonMark\\Extension\\Table\\TableSection::TYPE_HEAD')) ? 'thead' : 'tbody' -%}
+<{{ sectionType }}{{ node|render_attributes }}>
+{{ node|render_children }}
+</{{ sectionType }}>

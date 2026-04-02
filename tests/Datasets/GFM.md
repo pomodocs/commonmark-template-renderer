@@ -165,6 +165,7 @@ GFM automatically converts URLs and email addresses into links.
 
 ---
 
+
 ## 14. Mentions and References (GitHub Feature)
 
 
@@ -173,6 +174,7 @@ GFM automatically converts URLs and email addresses into links.
 
 
 ---
+
 
 ## 15. Escaping Characters
 
@@ -184,13 +186,16 @@ Use backslash `\`:
 
 ---
 
+
 ## 16. HTML Support
 
 Inline HTML is supported:
 
 <div>HTML content</div>
 
+
 ---
+
 
 ## Notes
 
@@ -198,7 +203,9 @@ Inline HTML is supported:
 * Additional GFM extensions are documented here:
   [https://github.github.com/gfm/](https://github.github.com/gfm/)
 
+
 ---
+
 
 ## License
 

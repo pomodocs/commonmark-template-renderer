@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace PomoDocs\CommonMark\TwigRenderer\Tests\Functional;
 
-use League\CommonMark\CommonMarkConverter;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
@@ -29,6 +28,7 @@ beforeEach(function () {
             ]
         ]
     );
+    $env->addExtension(new CommonMarkCoreExtension());
     $env->addExtension(new GithubFlavoredMarkdownExtension());
         
     $this->twigConverter = new TemplateConverter($env);
