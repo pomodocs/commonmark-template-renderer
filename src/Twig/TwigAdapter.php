@@ -22,6 +22,7 @@ use League\CommonMark\Node\Block\Paragraph;
 use League\CommonMark\Node\Node;
 use League\Config\ConfigurationInterface;
 use phootwork\lang\Text;
+use PomoDocs\CommonMark\Alert\Node\Block\Alert;
 use PomoDocs\CommonMark\TemplateRenderer\AdapterInterface;
 use PomoDocs\CommonMark\TemplateRenderer\Parts\SeparatorPart;
 use Twig\Environment;
@@ -179,6 +180,7 @@ final class TwigAdapter implements AdapterInterface
             $node instanceof Link => $this->normalizeLink($node),
             $node instanceof FencedCode => $this->normalizeFencedCode($node),
             $node instanceof TableCell => $this->normalizeTableCell($node),
+            $node instanceof Alert => $this->normalizeAlert($node),
             default => $node
         };
     }
@@ -224,6 +226,25 @@ final class TwigAdapter implements AdapterInterface
         if ($node->getAlign() !== null) {
             $node->data->append('attributes/align', $node->getAlign());
         }
+
+        return $node;
+    }
+
+    /**
+     * Normalize Alert node.
+     * 
+     * @param Alert $node
+     * @return Alert
+     */
+    private function normalizeAlert(Alert $node): Alert
+    {
+        $type = $node->getType();
+
+        $class = $this->configuration->get('alert/class_name');
+        $colorClass = $this->configuration->get("alert/colors/$type");
+
+        $node->data->append('attributes/class', "$class");
+        $node->data->append('attributes/class', "$class-$colorClass");
 
         return $node;
     }

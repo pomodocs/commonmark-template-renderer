@@ -1,0 +1,12 @@
+<div{{ node|render_attributes }}>
+<p class="{{ configuration.get('alert/class_name') }}-title">
+{%- if configuration.alert.icons.active -%}
+    {%- if configuration.alert.icons.use_svg -%}
+        {{- configuration.get('alert/icons/svg/' ~ node.type) -}}
+    {%- else -%}
+        <i class="{{ configuration.get('alert/icons/names/' ~ node.type) }}"></i>
+    {%- endif -%}
+{%- endif -%}        
+{{- configuration.get('alert/labels/' ~ node.type) -}}</p>
+{{ node|render_children }}
+</div>

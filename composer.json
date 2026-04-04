@@ -17,13 +17,13 @@
   "require": {
     "php": ">=8.3",
     "league/commonmark": "^2.7",
+    "pomodocs/commonmark-alert": "^0.8.0",
     "phootwork/lang": "^3.2"
   },
   "require-dev": {
     "twig/twig": "^3.21",
     "pestphp/pest": "^4.4",
-    "mikey179/vfsstream": "^1.6",
-    "pomodocs/commonmark-alert": "^0.7.0"
+    "mikey179/vfsstream": "^1.6"
   },
   "scripts": {
     "analytics": "tools/phpstan analyze",
@@ -58,7 +58,6 @@
     "twig/twig": "To render templates using Twig",
     "latte/latte": "To render templates using Latte (not supported yet)",
     "league/plates": "To render templates using Plates (not supported yet)",
-    "eftec/bladeone": "To render templates using Blade (not supported yet)",
-    "pomodocs/commonmark-alert": "To render alert boxes in Github blockquote style"
+    "eftec/bladeone": "To render templates using Blade (not supported yet)"
   }
 }

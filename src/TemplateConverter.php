@@ -19,7 +19,7 @@ use League\CommonMark\Output\RenderedContentInterface;
 use League\CommonMark\Parser\MarkdownParser;
 use League\CommonMark\Parser\MarkdownParserInterface;
 
-final class TemplateConverter implements ConverterInterface
+class TemplateConverter implements ConverterInterface
 {
     private MarkdownParserInterface $markdownParser;
     private TemplateRenderer $templateRenderer;

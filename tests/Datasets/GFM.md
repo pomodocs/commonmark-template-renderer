@@ -196,6 +196,17 @@ Inline HTML is supported:
 
 ---
 
+## 17. Alert Extension
+
+Support Github Flavored blockquote alerts:
+
+> [!WARNING]
+> You're doing something terribly dangerous!
+> Please, stop right now!
+
+It's available only if you install `pomodocs/commonmark-alert` extension.
+
+---
 
 ## Notes
 
