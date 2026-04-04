@@ -1,0 +1,27 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the pomodocs/commonmark-template-renderer package.
+ * MIT License. For the full copyright and license information,
+ * please view the LICENSE file that was distributed
+ * with this source code.
+ */
+
+dataset('description_list', [<<<MARKDOWN
+Apple
+:   Pomaceous fruit of plants of the genus Malus in
+    the family Rosaceae.
+:   An American computer company.
+
+Orange
+:   The fruit of an evergreen tree of the genus Citrus.
+:   A color between red and yellow in the spectrum.
+:   A programming language created by Apple.
+
+Blue
+:   The color of the clear sky and the deep sea.
+:   An old Italian phone company.
+MARKDOWN
+]);

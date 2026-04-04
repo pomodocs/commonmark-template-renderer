@@ -31,7 +31,7 @@ final class TemplateRendererExtension implements ConfigurableExtensionInterface
             if (!class_exists($this->getEngineClass($value->engine))) {
                 $context->addError("The template engine '{$value->engine}' is not available. Please install it by running `composer require {$this->getEnginePackage($value->engine)}`.", 'templateRenderer.engine');
             }
-        
+
             // Add the default templates directory for the selected engine
             $value->templates_dirs[] = __DIR__ . '/../resources/templates/default/' . $value->engine;
             foreach ($value->templates_dirs as $dir) {
@@ -44,14 +44,11 @@ final class TemplateRendererExtension implements ConfigurableExtensionInterface
         }));
     }
 
-    public function register(EnvironmentBuilderInterface $environment): void
-    {
-        
-    }
+    public function register(EnvironmentBuilderInterface $environment): void {}
 
     /**
      * Get the class name for the specified template engine.
-     * 
+     *
      * @param string $engine The name of the template engine (e.g., 'twig', 'latte', 'plates', 'blade').
      * @return string The fully qualified class name of the template engine.
      */
@@ -67,7 +64,7 @@ final class TemplateRendererExtension implements ConfigurableExtensionInterface
 
     /**
      * Get the Composer package name for the specified template engine.
-     * 
+     *
      * @param string $engine The name of the template engine (e.g., 'twig', 'latte', 'plates', 'blade').
      * @return string The Composer package name required for the template engine.
      */

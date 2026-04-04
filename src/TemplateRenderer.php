@@ -37,7 +37,7 @@ final class TemplateRenderer implements DocumentRendererInterface, ChildNodeRend
             'latte' => throw new \InvalidArgumentException('Latte engine is not yet implemented.'),
             'blade' => throw new \InvalidArgumentException('Blade engine is not yet implemented.'),
             default => throw new \InvalidArgumentException('Unsupported template engine: ' . $this->getConfiguration()->get('templateRenderer.engine')),
-        };  
+        };
     }
 
     public function renderDocument(Document $document): RenderedContentInterface
@@ -46,11 +46,11 @@ final class TemplateRenderer implements DocumentRendererInterface, ChildNodeRend
 
         $event = new DocumentRenderedEvent(
             new RenderedContent(
-                $document, 
-                $this->renderNodes($document->iterator())
-            )
+                $document,
+                $this->renderNodes($document->iterator()),
+            ),
         );
-        
+
         $this->environment->dispatch($event);
 
         return $event->getOutput();
@@ -65,7 +65,7 @@ final class TemplateRenderer implements DocumentRendererInterface, ChildNodeRend
 
         foreach ($nodes as $node) {
             //Children nodes are rendered via `render_children` filter.
-            if ($node->parent() instanceof Document || $node->parent() === null ) {   
+            if ($node->parent() instanceof Document || $node->parent() === null) {
                 $output .= $this->getSeparator($node) . $this->engine->renderNode($node);
             }
         }

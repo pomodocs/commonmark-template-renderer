@@ -17,15 +17,15 @@ use PomoDocs\CommonMark\TemplateRenderer\PomodocsConverter;
 
 beforeEach(function () {
     $config = [
-            'html_input' => 'escape', 
-            'templateRenderer' => [
-                'engine' => 'twig',
-                'templates_dirs' => [
-                    $this->root->url()
-                ]
-            ]
-        ];
-        
+        'html_input' => 'escape',
+        'templateRenderer' => [
+            'engine' => 'twig',
+            'templates_dirs' => [
+                $this->root->url(),
+            ],
+        ],
+    ];
+
     $this->pomodocs = new PomodocsConverter($config);
     $this->stdConverter = new GithubFlavoredMarkdownConverter(['html_input' => 'escape']);
     $this->stdConverter->getEnvironment()->addExtension(new AlertExtension());
@@ -35,6 +35,6 @@ it('renders a Github Flavored markdown file', function () {
     $markdown = file_get_contents(__DIR__ . '/../Datasets/GFM.md');
     $expected = $this->stdConverter->convert($markdown)->getContent();
     $actual = $this->pomodocs->convert($markdown)->getContent();
-    
-    expect($expected)->toBe($actual);  
+
+    expect($expected)->toBe($actual);
 });

@@ -24,7 +24,7 @@ trait SeparatorPart
 
     /**
      * Get the correct separator based on node type (block or inline).
-     * 
+     *
      * @param Node $node
      * @return string
      */
@@ -32,10 +32,10 @@ trait SeparatorPart
     {
         return ($node instanceof AbstractInline) ? $this->getInnerSeparator() : $this->getBlockSeparator();
     }
-    
+
     /**
      * Get the block separator.
-     * 
+     *
      * @return string
      */
     public function getBlockSeparator(): string
@@ -45,7 +45,7 @@ trait SeparatorPart
 
     /**
      * Get the inline separator.
-     * 
+     *
      * @return string
      */
     public function getInnerSeparator(): string

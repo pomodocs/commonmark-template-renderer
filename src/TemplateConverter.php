@@ -24,7 +24,7 @@ class TemplateConverter implements ConverterInterface
     private MarkdownParserInterface $markdownParser;
     private TemplateRenderer $templateRenderer;
 
-    public function __construct(Environment $environment)
+    public function __construct(private Environment $environment)
     {
         $environment->addExtension(new TemplateRendererExtension());
         $this->markdownParser = new MarkdownParser($environment);
@@ -57,5 +57,16 @@ class TemplateConverter implements ConverterInterface
     public function __invoke(string $markdown): RenderedContentInterface
     {
         return $this->convert($markdown);
+    }
+
+    /**
+     * Returns the Environment instance used by this converter.
+     * This can be useful to add extensions or change configuration settings.
+     *
+     * @return Environment
+     */
+    public function getEnvironment(): Environment
+    {
+        return $this->environment;
     }
 }

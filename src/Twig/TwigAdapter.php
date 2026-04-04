@@ -16,6 +16,7 @@ use League\CommonMark\Extension\Attributes\Util\AttributesHelper;
 use League\CommonMark\Extension\CommonMark\Node\Block\FencedCode;
 use League\CommonMark\Extension\CommonMark\Node\Block\ListItem;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
+use League\CommonMark\Extension\DescriptionList\Node\Description;
 use League\CommonMark\Extension\Table\TableCell;
 use League\CommonMark\Node\Block\Document;
 use League\CommonMark\Node\Block\Paragraph;
@@ -33,7 +34,7 @@ use Twig\TwigFilter;
 
 /**
  * Twig template engine wrapper.
- * 
+ *
  * This class instantiates a Twig Environment instance, configures it and adds some useful filters.
  * It also contains some normalize methods.
  */
@@ -42,7 +43,7 @@ final class TwigAdapter implements AdapterInterface
     use SeparatorPart;
 
     /**
-     * @var Environment The Twig instance. 
+     * @var Environment The Twig instance.
      */
     private Environment $twig;
 
@@ -57,7 +58,7 @@ final class TwigAdapter implements AdapterInterface
         $twig = new Environment($loader, [
             'autoescape' => false,
             //'cache' => sys_get_temp_dir() . '/commonmark_twig_renderer_cache',
-            'debug' => true
+            'debug' => true,
         ]);
         $twig->addExtension(new DebugExtension());
         $this->setEngine($twig);
@@ -68,9 +69,9 @@ final class TwigAdapter implements AdapterInterface
      * This method is used to set a custom, already configured Twig instance to be used by the renderer.
      * It's useful when we need a custom Twig configuration or an instance taken from a di container.
      * It adds the necessary filters to the Twig instance.
-     * 
+     *
      * @param Environment $engine The Twig instance.
-     * @return void    
+     * @return void
      */
     public function setEngine(Environment $engine): void
     {
@@ -84,7 +85,7 @@ final class TwigAdapter implements AdapterInterface
     /**
      * Twig filter method.
      * Render the children of a node.
-     * 
+     *
      * @param Node $node The node to render the children of.
      * @return string
      */
@@ -94,17 +95,17 @@ final class TwigAdapter implements AdapterInterface
             return '';
         }
 
-        $output ='';
+        $output = '';
 
         foreach ($node->children() as $child) {
             // Force tight lists.
-            if ($node instanceof ListItem && $child instanceof Paragraph) {
+            if (($node instanceof ListItem || $node instanceof Description) && $child instanceof Paragraph) {
                 $output .= $this->renderChildren($child);
             } else {
                 $output .= $this->renderNode($child);
             }
 
-            if ($child instanceof ListItem) {
+            if ($child instanceof ListItem || $child instanceof Description) {
                 $output .= $this->getSeparator($child);
             }
         }
@@ -115,7 +116,7 @@ final class TwigAdapter implements AdapterInterface
     /**
      * Twig filter method.
      * Render the attributes of a node.
-     * 
+     *
      * @return string
      */
     public function renderAttributes(Node $node): string
@@ -132,9 +133,9 @@ final class TwigAdapter implements AdapterInterface
     /**
      * Twig filter method.
      * Unescape single quotes in a string.
-     * This method is useful to unescape single quotes since Twig escapes them by default and 
+     * This method is useful to unescape single quotes since Twig escapes them by default and
      * CommonMark expects them to be unescaped.
-     * 
+     *
      * @return string
      */
     public function unescapeSingleQuotes(string $value): string
@@ -144,7 +145,7 @@ final class TwigAdapter implements AdapterInterface
 
     /**
      * Render a node via Twig template engine.
-     * 
+     *
      * @return string The resulted html.
      * @throws LoaderError It the template does not exist.
      */
@@ -159,7 +160,7 @@ final class TwigAdapter implements AdapterInterface
 
         $nodeClass = Text::create(get_class($node))->split('\\')->pop();
         $templateName = Text::create($nodeClass)->toSnakeCase()->append('.html.twig')->toString();
-        
+
         return $this->twig->render($templateName, ['node' => $node, 'configuration' => $this->configuration]);
     }
 
@@ -170,24 +171,24 @@ final class TwigAdapter implements AdapterInterface
 
     /**
      * Normalize node.
-     * 
+     *
      * @param Node $node
      * @return Node
      */
     private function normalizeNode(Node $node): Node
     {
-        return match(true) {
+        return match (true) {
             $node instanceof Link => $this->normalizeLink($node),
             $node instanceof FencedCode => $this->normalizeFencedCode($node),
             $node instanceof TableCell => $this->normalizeTableCell($node),
             $node instanceof Alert => $this->normalizeAlert($node),
-            default => $node
+            default => $node,
         };
     }
 
     /**
      * Normalize Link node.
-     * 
+     *
      * @param Link $node
      * @return Link
      */
@@ -202,7 +203,7 @@ final class TwigAdapter implements AdapterInterface
 
     /**
      * Normalize FencedCode node.
-     * 
+     *
      * @param FencedCode $node
      * @return FencedCode
      */
@@ -217,7 +218,7 @@ final class TwigAdapter implements AdapterInterface
 
     /**
      * Normalize TableCell node.
-     * 
+     *
      * @param TableCell $node
      * @return TableCell
      */
@@ -232,7 +233,7 @@ final class TwigAdapter implements AdapterInterface
 
     /**
      * Normalize Alert node.
-     * 
+     *
      * @param Alert $node
      * @return Alert
      */

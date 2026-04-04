@@ -20,7 +20,7 @@ use PomoDocs\CommonMark\TemplateRenderer\TemplateConverter;
 /**
  * An already configured converter for Github Flavored Markdown with the TemplateRenderer
  * and `pomodocs/commonmark-alert` extensions.
- * 
+ *
  * @see https://github.com/pomodocs/commonmark-alert
  */
 final class PomodocsConverter extends TemplateConverter

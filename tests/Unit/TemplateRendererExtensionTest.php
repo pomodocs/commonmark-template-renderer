@@ -17,17 +17,18 @@ use League\Config\Exception\ValidationException;
 use PomoDocs\CommonMark\TemplateRenderer\TemplateConverter;
 
 it("configures the template renderer extension", function () {
-    $env = new Environment([
-            'html_input' => 'escape', 
+    $env = new Environment(
+        [
+            'html_input' => 'escape',
             'templateRenderer' => [
                 'engine' => 'twig',
                 'templates_dirs' => [
-                    $this->root->url()
-                ]
-            ]
-        ]
+                    $this->root->url(),
+                ],
+            ],
+        ],
     );
-        
+
     $converter = new TemplateConverter($env);
     expect(true)->toBeTrue(); // Just ensure no exceptions are thrown during configuration
 });
@@ -38,29 +39,33 @@ it("configures the template renderer extension with default values", function ()
 });
 
 it("throws an exception if the specified template engine is not supported", function () {
-    $env = new Environment([
-            'html_input' => 'escape', 
+    $env = new Environment(
+        [
+            'html_input' => 'escape',
             'templateRenderer' => [
-                'engine' => 'nonexistent_engine'
-            ]
-        ]
+                'engine' => 'nonexistent_engine',
+            ],
+        ],
     );
-      
+
     $conv = new TemplateConverter($env);
-})->throws(ValidationException::class,
-        "The item 'templateRenderer › engine' expects to be 'twig'|'latte'|'plates'|'blade', 'nonexistent...' given."
+})->throws(
+    ValidationException::class,
+    "The item 'templateRenderer › engine' expects to be 'twig'|'latte'|'plates'|'blade', 'nonexistent...' given.",
 );
 
 it("throws an error if the specified template engine is not available", function () {
-    $env = new Environment([
-            'html_input' => 'escape', 
+    $env = new Environment(
+        [
+            'html_input' => 'escape',
             'templateRenderer' => [
-                'engine' => 'latte'
-            ]
-        ]
+                'engine' => 'latte',
+            ],
+        ],
     );
-      
+
     $conv = new TemplateConverter($env);
-})->throws(ValidationException::class,
-    "The template engine 'latte' is not available. Please install it by running `composer require latte/latte`."
+})->throws(
+    ValidationException::class,
+    "The template engine 'latte' is not available. Please install it by running `composer require latte/latte`.",
 );

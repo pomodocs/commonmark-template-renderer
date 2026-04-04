@@ -21,9 +21,9 @@ use PomoDocs\CommonMark\TemplateRenderer\Twig\TwigAdapter;
 beforeEach(function () {
     $this->twig = new TwigAdapter(
         $this->createConfiguredMock(
-            ConfigurationInterface::class, 
-            ['get' => [realpath(__DIR__ . '/../../../resources/templates/default/twig')]]
-        )
+            ConfigurationInterface::class,
+            ['get' => [realpath(__DIR__ . '/../../../resources/templates/default/twig')]],
+        ),
     );
 });
 
@@ -58,7 +58,7 @@ it('should render children nodes', function () {
     $text = new Text('Test render children.');
     $strong->appendChild($text);
     $node->appendChild($strong);
-    $rendered = $this->twig->renderChildren($node); 
+    $rendered = $this->twig->renderChildren($node);
     expect($rendered)->toBe('<strong>Test render children.</strong>');
 });
 

@@ -18,19 +18,20 @@ use League\CommonMark\GithubFlavoredMarkdownConverter;
 use PomoDocs\CommonMark\TemplateRenderer\TemplateConverter;
 
 beforeEach(function () {
-    $env = new Environment([
-            'html_input' => 'escape', 
+    $env = new Environment(
+        [
+            'html_input' => 'escape',
             'templateRenderer' => [
                 'engine' => 'twig',
                 'templates_dirs' => [
-                    $this->root->url()
-                ]
-            ]
-        ]
+                    $this->root->url(),
+                ],
+            ],
+        ],
     );
     $env->addExtension(new CommonMarkCoreExtension());
     $env->addExtension(new GithubFlavoredMarkdownExtension());
-        
+
     $this->twigConverter = new TemplateConverter($env);
     $this->stdConverter = new GithubFlavoredMarkdownConverter(['html_input' => 'escape']);
 });
@@ -39,6 +40,6 @@ it('renders a Github Flavored markdown file', function () {
     $markdown = file_get_contents(__DIR__ . '/../../Datasets/GFM.md');
     $expected = $this->stdConverter->convert($markdown)->getContent();
     $actual = $this->twigConverter->convert($markdown)->getContent();
-    
-    expect($expected)->toBe($actual);  
+
+    expect($expected)->toBe($actual);
 });
