@@ -25,3 +25,20 @@ Blue
 :   An old Italian phone company.
 MARKDOWN
 ]);
+
+dataset('footnotes', [
+<<<MARKDOWN
+This is a footnote reference,[^1] and another.[^longnote]
+
+[^1]: Here is the footnote.
+[^longnote]: Here's one with multiple paragraphs and code.
+
+    Indented paragraphs are also part of the footnote.
+
+        ```python
+        def hello_world():
+            print("Hello, world!")
+        ```
+
+MARKDOWN
+]);

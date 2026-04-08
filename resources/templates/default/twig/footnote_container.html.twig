@@ -1,0 +1,5 @@
+<div{{ node|render_attributes }}>
+{%- if configuration.get('footnote/container_add_hr') -%}
+  <hr />
+{%- endif -%}
+<ol>{{ node|render_children }}</ol></div>

@@ -15,6 +15,9 @@ use League\CommonMark\CommonMarkConverter;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\Extension\DescriptionList\DescriptionListExtension;
+use League\CommonMark\Extension\Embed\EmbedAdapterInterface;
+use League\CommonMark\Extension\Embed\EmbedExtension;
+use League\CommonMark\Extension\Footnote\FootnoteExtension;
 use PomoDocs\CommonMark\TemplateRenderer\TemplateConverter;
 
 beforeEach(function () {
@@ -91,3 +94,62 @@ it('renders a description list, via Description List Extension', function (strin
 
     expect($expected)->toBe($actual);
 })->with('description_list');
+
+it('renders embedded content, via Embed Extension', function () {
+    $adapter = $this->getMockBuilder(EmbedAdapterInterface::class)->getMock();
+    /*$adapter->expects($this->once())
+        ->method('getEmbedCode')
+        ->willReturn('<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>');
+*/
+    $env = new Environment(
+        [
+            'html_input' => 'escape',
+            'templateRenderer' => [
+                'engine' => 'twig',
+                'templates_dirs' => [
+                    $this->root->url(),
+                ],
+            ],
+            'embed' => [
+                'adapter' => $adapter,
+                'allowed_domains' => ['youtube.com', 'twitter.com', 'github.com'],
+                'fallback' => 'link',
+            ],
+        ],
+    );
+    $env->addExtension(new CommonMarkCoreExtension());
+    $env->addExtension(new EmbedExtension());
+
+    $twigConverter = new TemplateConverter($env);
+    $stdConverter = new CommonMarkConverter([
+        'html_input' => 'escape',
+        'embed' => [
+            'adapter' => $adapter,
+            'allowed_domains' => ['youtube.com', 'twitter.com', 'github.com'],
+            'fallback' => 'link',
+            ]
+        ]
+    );
+    $stdConverter->getEnvironment()->addExtension(new EmbedExtension());
+
+    $markdown = "
+Check out this video!
+
+https://www.youtube.com/watch?v=dQw4w9WgXcQ  
+";
+
+    $expected = $stdConverter->convert($markdown)->getContent();
+    $actual = $twigConverter->convert($markdown)->getContent();
+
+    expect($expected)->toBe($actual);
+});
+
+it('renders a footnotes list, via Footnotes Extension', function (string $markdown) {
+    $this->stdConverter->getEnvironment()->addExtension(new FootnoteExtension());
+    $this->twigConverter->getEnvironment()->addExtension(new FootnoteExtension());
+
+    $expected = $this->stdConverter->convert($markdown)->getContent();
+    $actual = $this->twigConverter->convert($markdown)->getContent();
+
+    expect($expected)->toBe($actual);
+})->with('footnotes');

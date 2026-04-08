@@ -17,8 +17,7 @@
   "require": {
     "php": ">=8.3",
     "league/commonmark": "^2.7",
-    "pomodocs/commonmark-alert": "^0.8.0",
-    "phootwork/lang": "^3.2"
+    "pomodocs/commonmark-alert": "^0.8.0"
   },
   "require-dev": {
     "twig/twig": "^3.21",
