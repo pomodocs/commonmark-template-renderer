@@ -20,6 +20,7 @@ use League\CommonMark\Extension\Embed\EmbedExtension;
 use League\CommonMark\Extension\Footnote\FootnoteExtension;
 use League\CommonMark\Extension\FrontMatter\FrontMatterExtension;
 use League\CommonMark\Extension\HeadingPermalink\HeadingPermalinkExtension;
+use League\CommonMark\Extension\Highlight\HighlightExtension;
 use PomoDocs\CommonMark\TemplateRenderer\TemplateConverter;
 
 beforeEach(function () {
@@ -176,3 +177,12 @@ it('renders markdown with heading permalinks', function(string $markdown) {
     expect($expected)->toBe($actual);
 })->with(["# Heading 1\n\n## Heading 2\n\n### Heading 3\n"]);
 
+it('renders markdown with highlight extension', function(string $markdown) {
+    $this->stdConverter->getEnvironment()->addExtension(new HighlightExtension());
+    $this->twigConverter->getEnvironment()->addExtension(new HighlightExtension());
+
+    $expected = $this->stdConverter->convert($markdown)->getContent();
+    $actual = $this->twigConverter->convert($markdown)->getContent();
+
+    expect($expected)->toBe($actual);
+})->with(["I need to highlight these ==very important words==."]);
