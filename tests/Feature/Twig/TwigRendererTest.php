@@ -18,6 +18,8 @@ use League\CommonMark\Extension\DescriptionList\DescriptionListExtension;
 use League\CommonMark\Extension\Embed\EmbedAdapterInterface;
 use League\CommonMark\Extension\Embed\EmbedExtension;
 use League\CommonMark\Extension\Footnote\FootnoteExtension;
+use League\CommonMark\Extension\FrontMatter\FrontMatterExtension;
+use League\CommonMark\Extension\HeadingPermalink\HeadingPermalinkExtension;
 use PomoDocs\CommonMark\TemplateRenderer\TemplateConverter;
 
 beforeEach(function () {
@@ -153,3 +155,24 @@ it('renders a footnotes list, via Footnotes Extension', function (string $markdo
 
     expect($expected)->toBe($actual);
 })->with('footnotes');
+
+it('renders markdown with fron matter', function(string $markdown) {
+    $this->stdConverter->getEnvironment()->addExtension(new FrontMatterExtension());
+    $this->twigConverter->getEnvironment()->addExtension(new FrontMatterExtension());
+
+    $expected = $this->stdConverter->convert($markdown)->getContent();
+    $actual = $this->twigConverter->convert($markdown)->getContent();
+
+    expect($expected)->toBe($actual);
+})->with('front_matter');
+
+it('renders markdown with heading permalinks', function(string $markdown) {
+    $this->stdConverter->getEnvironment()->addExtension(new HeadingPermalinkExtension());
+    $this->twigConverter->getEnvironment()->addExtension(new HeadingPermalinkExtension());
+
+    $expected = $this->stdConverter->convert($markdown)->getContent();
+    $actual = $this->twigConverter->convert($markdown)->getContent();
+
+    expect($expected)->toBe($actual);
+})->with(["# Heading 1\n\n## Heading 2\n\n### Heading 3\n"]);
+

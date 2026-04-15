@@ -17,6 +17,7 @@ use League\CommonMark\Extension\Footnote\Node\Footnote;
 use League\CommonMark\Extension\Footnote\Node\FootnoteBackref;
 use League\CommonMark\Extension\Footnote\Node\FootnoteContainer;
 use League\CommonMark\Extension\Footnote\Node\FootnoteRef;
+use League\CommonMark\Extension\HeadingPermalink\HeadingPermalink;
 use League\CommonMark\Extension\Table\TableCell;
 use League\CommonMark\Node\Node;
 use League\Config\ConfigurationInterface;
@@ -42,15 +43,16 @@ final class NodeNormalizer
      */
     public function normalize(Node $node): Node
     {
-        return match (true) {
-            $node instanceof Link => $this->normalizeLink($node),
-            $node instanceof FencedCode => $this->normalizeFencedCode($node),
-            $node instanceof TableCell => $this->normalizeTableCell($node),
-            $node instanceof Alert => $this->normalizeAlert($node),
-            $node instanceof FootnoteContainer => $this->normalizeFootnoteContainer($node),
-            $node instanceof FootnoteRef => $this->normalizeFootnoteRef($node),
-            $node instanceof Footnote => $this->normalizeFootnote($node),
-            $node instanceof FootnoteBackref => $this->normalizeFootnoteBackref($node),
+        return match (get_class($node)) {
+            Link::class => $this->normalizeLink($node),
+            FencedCode::class => $this->normalizeFencedCode($node),
+            TableCell::class => $this->normalizeTableCell($node),
+            Alert::class => $this->normalizeAlert($node),
+            FootnoteContainer::class => $this->normalizeFootnoteContainer($node),
+            FootnoteRef::class => $this->normalizeFootnoteRef($node),
+            Footnote::class => $this->normalizeFootnote($node),
+            FootnoteBackref::class => $this->normalizeFootnoteBackref($node),
+            HeadingPermalink::class => $this->normalizeHeadingPermalink($node),
             default => $node,
         };
     }
@@ -175,6 +177,38 @@ final class NodeNormalizer
         $node->data->set('attributes/rev', 'footnote');
         $node->data->set('attributes/href', \mb_strtolower($node->getReference()->getDestination(), 'UTF-8'));
         $node->data->set('attributes/role', 'doc-backlink');
+
+        return $node;
+    }
+
+    /**
+     * Normalize HeadingPermalink node.
+     *
+     * @param HeadingPermalink $node
+     * @return HeadingPermalink
+     */
+    private function normalizeHeadingPermalink(HeadingPermalink $node): HeadingPermalink
+    {
+        $slug = $node->getSlug();
+
+        $fragmentPrefix = (string) $this->configuration->get('heading_permalink/fragment_prefix');
+        $fragmentPrefix = $fragmentPrefix !== '' ? $fragmentPrefix . '-' : '';
+        
+        if (! $this->configuration->get('heading_permalink/apply_id_to_heading')) {
+            $idPrefix = (string) $this->configuration->get('heading_permalink/id_prefix');
+            $idPrefix = $idPrefix !== '' ? $idPrefix . '-' : '';
+            
+            $node->data->set('attributes/id', $idPrefix . $slug);
+        }
+
+        $node->data->set('attributes/href', '#' . $fragmentPrefix . $slug);
+        $node->data->append('attributes/class', $this->configuration->get('heading_permalink/html_class'));
+
+        if ($this->configuration->get('heading_permalink/aria_hidden')) {
+            $node->data->set('attributes/aria-hidden', 'true');
+        }
+
+        $node->data->set('attributes/title', $this->configuration->get('heading_permalink/title'));
 
         return $node;
     }

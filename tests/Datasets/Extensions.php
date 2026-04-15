@@ -42,3 +42,16 @@ This is a footnote reference,[^1] and another.[^longnote]
 
 MARKDOWN
 ]);
+
+dataset('front_matter', [<<<MARKDOWN
+---
+title: "My Document"
+author: "Cristiano Cinotti"
+date: "2026-04-08"
+---
+
+# Hello World
+
+This is a sample document with front matter.
+MARKDOWN
+]);

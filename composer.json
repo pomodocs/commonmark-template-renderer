@@ -22,7 +22,8 @@
   "require-dev": {
     "twig/twig": "^3.21",
     "pestphp/pest": "^4.4",
-    "mikey179/vfsstream": "^1.6"
+    "mikey179/vfsstream": "^1.6",
+    "symfony/yaml": "^8.0"
   },
   "scripts": {
     "analytics": "tools/phpstan analyze",
