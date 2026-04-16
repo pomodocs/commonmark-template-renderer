@@ -23,7 +23,9 @@ use League\CommonMark\Extension\HeadingPermalink\HeadingPermalinkExtension;
 use League\CommonMark\Extension\Highlight\HighlightExtension;
 use League\CommonMark\Extension\Mention\MentionExtension;
 use League\CommonMark\Extension\Strikethrough\StrikethroughExtension;
+use League\CommonMark\Extension\Table\TableExtension;
 use League\CommonMark\Extension\TableOfContents\TableOfContentsExtension;
+use League\CommonMark\Extension\TaskList\TaskListExtension;
 use PomoDocs\CommonMark\TemplateRenderer\TemplateConverter;
 
 beforeEach(function () {
@@ -222,3 +224,23 @@ it('renders markdown with Table of Contents Extension', function(string $markdow
     // don't care about newlines, as they can be different between the two renderers
     expect(str_replace("\n", "", $expected))->toBe(str_replace("\n", "", $actual));
 })->with('toc');
+
+it('renders markdown with tables, via Table Extension', function(string $markdown) {
+    $this->twigConverter->getEnvironment()->addExtension(new TableExtension());
+    $this->stdConverter->getEnvironment()->addExtension(new TableExtension());
+
+    $expected = $this->stdConverter->convert($markdown)->getContent();
+    $actual = $this->twigConverter->convert($markdown)->getContent();
+
+    expect($expected)->toBe($actual);
+})->with('tables');
+
+it('renders markdown with task lists, via Task List Extension', function(string $markdown) {
+    $this->twigConverter->getEnvironment()->addExtension(new TaskListExtension());
+    $this->stdConverter->getEnvironment()->addExtension(new TaskListExtension());
+
+    $expected = $this->stdConverter->convert($markdown)->getContent();
+    $actual = $this->twigConverter->convert($markdown)->getContent();
+
+    expect($expected)->toBe($actual);
+})->with('tasks');

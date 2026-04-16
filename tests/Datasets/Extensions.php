@@ -70,3 +70,18 @@ This is the second chapter.
 This is the third chapter.
 MARKDOWN
 ]);
+
+dataset('tables', [<<<MARKDOWN
+| header 1 | header 2 | header 2 |
+| :------- | :------: | -------: |
+| cell 1.1 | cell 1.2 | cell 1.3 |
+| cell 2.1 | cell 2.2 | cell 2.3 |
+MARKDOWN
+]);
+
+dataset('tasks', [<<<MARKDOWN
+- [ ] Task 1
+- [x] Task 2
+- [ ] Task 3
+MARKDOWN
+]);
