@@ -55,3 +55,18 @@ date: "2026-04-08"
 This is a sample document with front matter.
 MARKDOWN
 ]);
+
+dataset('toc', [<<<MARKDOWN
+# Chapter 1
+
+This is the first chapter.
+
+## Chapter 2
+
+This is the second chapter.
+
+### Chapter 3
+
+This is the third chapter.
+MARKDOWN
+]);

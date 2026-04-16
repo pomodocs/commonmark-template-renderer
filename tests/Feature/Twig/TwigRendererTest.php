@@ -21,6 +21,9 @@ use League\CommonMark\Extension\Footnote\FootnoteExtension;
 use League\CommonMark\Extension\FrontMatter\FrontMatterExtension;
 use League\CommonMark\Extension\HeadingPermalink\HeadingPermalinkExtension;
 use League\CommonMark\Extension\Highlight\HighlightExtension;
+use League\CommonMark\Extension\Mention\MentionExtension;
+use League\CommonMark\Extension\Strikethrough\StrikethroughExtension;
+use League\CommonMark\Extension\TableOfContents\TableOfContentsExtension;
 use PomoDocs\CommonMark\TemplateRenderer\TemplateConverter;
 
 beforeEach(function () {
@@ -157,7 +160,7 @@ it('renders a footnotes list, via Footnotes Extension', function (string $markdo
     expect($expected)->toBe($actual);
 })->with('footnotes');
 
-it('renders markdown with fron matter', function(string $markdown) {
+it('renders markdown with a front matter', function(string $markdown) {
     $this->stdConverter->getEnvironment()->addExtension(new FrontMatterExtension());
     $this->twigConverter->getEnvironment()->addExtension(new FrontMatterExtension());
 
@@ -177,7 +180,7 @@ it('renders markdown with heading permalinks', function(string $markdown) {
     expect($expected)->toBe($actual);
 })->with(["# Heading 1\n\n## Heading 2\n\n### Heading 3\n"]);
 
-it('renders markdown with highlight extension', function(string $markdown) {
+it('renders markdown with Highlight Extension', function(string $markdown) {
     $this->stdConverter->getEnvironment()->addExtension(new HighlightExtension());
     $this->twigConverter->getEnvironment()->addExtension(new HighlightExtension());
 
@@ -186,3 +189,36 @@ it('renders markdown with highlight extension', function(string $markdown) {
 
     expect($expected)->toBe($actual);
 })->with(["I need to highlight these ==very important words==."]);
+
+it('renders markdown with Mention Extension', function(string $markdown) {
+    $this->stdConverter->getEnvironment()->addExtension(new MentionExtension());
+    $this->twigConverter->getEnvironment()->addExtension(new MentionExtension());
+
+    $expected = $this->stdConverter->convert($markdown)->getContent();
+    $actual = $this->twigConverter->convert($markdown)->getContent();
+
+    expect($expected)->toBe($actual);
+})->with(["Please, ask @cristianoc72 about that"]);
+
+it('renders markdown with Strikethrough Extension', function(string $markdown) {
+    $this->stdConverter->getEnvironment()->addExtension(new StrikethroughExtension());
+    $this->twigConverter->getEnvironment()->addExtension(new StrikethroughExtension());
+
+    $expected = $this->stdConverter->convert($markdown)->getContent();
+    $actual = $this->twigConverter->convert($markdown)->getContent();
+
+    expect($expected)->toBe($actual);
+})->with(["This extension is ~~really good~~ great!"]);
+
+it('renders markdown with Table of Contents Extension', function(string $markdown) {
+    $this->twigConverter->getEnvironment()->addExtension(new TableOfContentsExtension());
+    $this->twigConverter->getEnvironment()->addExtension(new HeadingPermalinkExtension());
+    $this->stdConverter->getEnvironment()->addExtension(new TableOfContentsExtension());
+    $this->stdConverter->getEnvironment()->addExtension(new HeadingPermalinkExtension());
+
+    $expected = $this->stdConverter->convert($markdown)->getContent();
+    $actual = $this->twigConverter->convert($markdown)->getContent();
+
+    // don't care about newlines, as they can be different between the two renderers
+    expect(str_replace("\n", "", $expected))->toBe(str_replace("\n", "", $actual));
+})->with('toc');
