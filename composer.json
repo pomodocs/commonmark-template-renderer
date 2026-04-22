@@ -56,8 +56,8 @@
   },
   "suggest": {
     "twig/twig": "To render templates using Twig",
-    "latte/latte": "To render templates using Latte (not supported yet)",
-    "league/plates": "To render templates using Plates (not supported yet)",
-    "eftec/bladeone": "To render templates using Blade (not supported yet)"
+    "latte/latte": "To render templates using Latte",
+    "league/plates": "To render templates using Plates",
+    "eftec/bladeone": "To render templates using Blade"
   }
 }

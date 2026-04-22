@@ -19,12 +19,13 @@ use League\Config\ConfigurationInterface;
 use PomoDocs\CommonMark\TemplateRenderer\Twig\TwigAdapter;
 
 beforeEach(function () {
-    $this->twig = new TwigAdapter(
-        $this->createConfiguredMock(
-            ConfigurationInterface::class,
-            ['get' => [realpath(__DIR__ . '/../../../resources/templates/default/twig')]],
-        ),
-    );
+    $configMock = $this->getMockBuilder(ConfigurationInterface::class)->getMock();
+    $configMock->method('get')->willReturnMap([
+        ['templateRenderer/templates_dirs', [realpath(__DIR__ . '/../../../resources/templates/default/twig')]],
+        ['renderer/block_separator', "\n"],
+        ['renderer/inner_separator', ''],
+    ]);
+    $this->twig = new TwigAdapter($configMock);
 });
 
 it('should render a simple text node', function () {
@@ -73,4 +74,10 @@ it('should render a link node with target="_blank" and add rel="noopener norefer
     $node->data->set('attributes/target', '_blank');
     $rendered = $this->twig->renderNode($node);
     expect($rendered)->toBe('<a href="https://example.com" target="_blank" rel="noopener noreferrer"></a>');
+});
+
+it('should return the separator for inline nodes', function () {
+    $node = new Text('Test inline separator');
+    $separator = $this->twig->getSeparator($node);
+    expect($separator)->toBe('');
 });

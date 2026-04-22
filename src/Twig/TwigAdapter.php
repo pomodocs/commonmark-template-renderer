@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace PomoDocs\CommonMark\TemplateRenderer\Twig;
 
-use Attribute;
 use League\CommonMark\Extension\CommonMark\Node\Block\ListItem;
 use League\CommonMark\Extension\DescriptionList\Node\Description;
 use League\CommonMark\Extension\Footnote\Node\Footnote;
@@ -19,7 +18,6 @@ use League\CommonMark\Node\Block\Document;
 use League\CommonMark\Node\Block\Paragraph;
 use League\CommonMark\Node\Node;
 use League\Config\ConfigurationInterface;
-use phootwork\lang\Text;
 use PomoDocs\CommonMark\TemplateRenderer\AdapterInterface;
 use PomoDocs\CommonMark\TemplateRenderer\NodeNormalizer;
 use PomoDocs\CommonMark\TemplateRenderer\Parts\SeparatorPart;

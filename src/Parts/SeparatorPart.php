@@ -30,7 +30,7 @@ trait SeparatorPart
      */
     public function getSeparator(Node $node): string
     {
-        return ($node instanceof AbstractInline) ? $this->getInnerSeparator() : $this->getBlockSeparator();
+        return $node instanceof AbstractInline ? $this->getInnerSeparator() : $this->getBlockSeparator();
     }
 
     /**
@@ -40,7 +40,7 @@ trait SeparatorPart
      */
     public function getBlockSeparator(): string
     {
-        return $this->getConfiguration()->get('renderer.block_separator');
+        return $this->getConfiguration()->get('renderer/block_separator');
     }
 
     /**
@@ -50,6 +50,6 @@ trait SeparatorPart
      */
     public function getInnerSeparator(): string
     {
-        return $this->getConfiguration()->get('renderer.inner_separator');
+        return $this->getConfiguration()->get('renderer/inner_separator');
     }
 }

@@ -9,12 +9,13 @@ declare(strict_types=1);
  * with this source code.
  */
 
-namespace PomoDocs\CommonMark\TwigRenderer\Tests\Functional;
+namespace PomoDocs\CommonMark\TemplateRenderer\Tests\Unit;
 
-use InvalidArgumentException;
 use League\CommonMark\Environment\Environment;
 use League\Config\Exception\ValidationException;
 use PomoDocs\CommonMark\TemplateRenderer\TemplateConverter;
+use PomoDocs\CommonMark\TemplateRenderer\TemplateRendererExtension;
+use ReflectionMethod;
 
 it("configures the template renderer extension", function () {
     $env = new Environment(
@@ -54,7 +55,7 @@ it("throws an exception if the specified template engine is not supported", func
     "The item 'templateRenderer › engine' expects to be 'twig'|'latte'|'plates'|'blade', 'nonexistent...' given.",
 );
 
-it("throws an error if the specified template engine is not available", function () {
+it("throws an error if the specified template engine is latte and it's not available", function () {
     $env = new Environment(
         [
             'html_input' => 'escape',
@@ -69,3 +70,91 @@ it("throws an error if the specified template engine is not available", function
     ValidationException::class,
     "The template engine 'latte' is not available. Please install it by running `composer require latte/latte`.",
 );
+
+it("throws an error if the specified template engine is blade and it's not available", function () {
+    $env = new Environment(
+        [
+            'html_input' => 'escape',
+            'templateRenderer' => [
+                'engine' => 'blade',
+            ],
+        ],
+    );
+
+    $conv = new TemplateConverter($env);
+})->throws(
+    ValidationException::class,
+    "The template engine 'blade' is not available. Please install it by running `composer require eftec/bladeone`.",
+);
+
+it("throws an error if the specified template engine is plates and it's not available", function () {
+    $env = new Environment(
+        [
+            'html_input' => 'escape',
+            'templateRenderer' => [
+                'engine' => 'plates',
+            ],
+        ],
+    );
+
+    $conv = new TemplateConverter($env);
+})->throws(
+    ValidationException::class,
+    "The template engine 'plates' is not available. Please install it by running `composer require league/plates`.",
+);
+
+it("throws an error if a specified template directory does not exist", function () {
+    $env = new Environment(
+        [
+            'html_input' => 'escape',
+            'templateRenderer' => [
+                'engine' => 'twig',
+                'templates_dirs' => [
+                    $this->root->url(),
+                    $this->root->url() . '/nonexistent_dir',
+                ],
+            ],
+        ],
+    );
+
+    $conv = new TemplateConverter($env);
+})->throws(
+    ValidationException::class,
+    "The template directory 'vfs://root/nonexistent_dir' does not exist.",
+);
+
+it("throws an error if the default template directory for the selected engine does not exist", function () {
+    $env = new Environment(
+        [
+            'html_input' => 'escape',
+            'templateRenderer' => [
+                'engine' => 'twig',
+                'templates_dirs' => [
+                    $this->root->url(),
+                    __DIR__ . '/../resources/templates/default/twig_nonexistent', // Non-existent default directory
+                ],
+            ],
+        ],
+    );
+
+    $conv = new TemplateConverter($env);
+})->throws(
+    ValidationException::class,
+    "The template directory '" . __DIR__ . "/../resources/templates/default/twig_nonexistent' does not exist.",
+);
+
+it("gets the template library repository", function (string $engine, string $expectedPackage) {
+    $extension = new TemplateRendererExtension();
+    $method = new ReflectionMethod(TemplateRendererExtension::class, 'getEnginePackage');
+    $enginePackage = $method->invoke($extension, $engine);
+    
+    expect($enginePackage)->toBe($expectedPackage);
+})->with([['twig', 'twig/twig'], ['latte', 'latte/latte'], ['plates', 'league/plates'], ['blade', 'eftec/bladeone']]);
+
+it("gets the template library class name", function (string $engine, string $expectedClass) {
+    $extension = new TemplateRendererExtension();
+    $method = new ReflectionMethod(TemplateRendererExtension::class, 'getEngineClass');
+    $engineClass = $method->invoke($extension, $engine);
+    
+    expect($engineClass)->toBe($expectedClass);
+})->with([['twig', \Twig\Environment::class], ['latte', \Latte\Engine::class], ['plates', \League\Plates\Engine::class], ['blade', \bladeone\BladeOne::class]]);

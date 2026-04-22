@@ -244,3 +244,13 @@ it('renders markdown with task lists, via Task List Extension', function(string 
 
     expect($expected)->toBe($actual);
 })->with('tasks');
+
+it('renders a simple markdown string by calling Twig converter (__invoke test)', function () {
+    $markdown = "# Hello World\nThis is a **test** of the Twig converter.";
+    $twigConverter = $this->twigConverter;
+
+    $expected = $this->stdConverter->convert($markdown)->getContent();
+    $rendered = $twigConverter($markdown)->getContent();
+
+    expect($rendered)->toBe($expected);
+});
