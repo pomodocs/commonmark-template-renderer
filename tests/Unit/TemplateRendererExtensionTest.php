@@ -158,3 +158,15 @@ it("gets the template library class name", function (string $engine, string $exp
     
     expect($engineClass)->toBe($expectedClass);
 })->with([['twig', \Twig\Environment::class], ['latte', \Latte\Engine::class], ['plates', \League\Plates\Engine::class], ['blade', \bladeone\BladeOne::class]]);
+
+it("throws an error if the template library class is requested for an unsupported engine", function () {
+    $extension = new TemplateRendererExtension();
+    $method = new ReflectionMethod(TemplateRendererExtension::class, 'getEngineClass');
+    $method->invoke($extension, 'nonexistent_engine');
+})->throws(\InvalidArgumentException::class, "Unsupported template engine: nonexistent_engine");
+
+it("throws an error if the template library repository is requested for an unsupported engine", function () {
+    $extension = new TemplateRendererExtension();
+    $method = new ReflectionMethod(TemplateRendererExtension::class, 'getEnginePackage');
+    $method->invoke($extension, 'nonexistent_engine');
+})->throws(\InvalidArgumentException::class, "Unsupported template engine: nonexistent_engine");

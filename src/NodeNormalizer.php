@@ -38,8 +38,8 @@ final class NodeNormalizer
      * This method checks the type of the node and applies specific normalization logic based on its type.
      * If the node is of a recognized type, it will be transformed accordingly; otherwise, it will be returned as is.
      *
-     * @param mixed $node The node to normalize.
-     * @return mixed The normalized node, ready for Twig rendering.
+     * @param Node $node The node to normalize.
+     * @return Node The normalized node, ready for Twig rendering.
      */
     public function normalize(Node $node): Node
     {

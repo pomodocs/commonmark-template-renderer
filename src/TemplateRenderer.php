@@ -32,12 +32,14 @@ final class TemplateRenderer implements DocumentRendererInterface, ChildNodeRend
 
     public function __construct(private EnvironmentInterface $environment)
     {
-        $this->engine = match ($this->getConfiguration()->get('templateRenderer/engine')) {
-            'twig' => new TwigAdapter($this->getConfiguration())
+        $engine = $this->getConfiguration()->get('templateRenderer/engine');
+        $this->engine = match ($engine) {
+            'twig' => new TwigAdapter($this->getConfiguration()),
             /*  'latte' => new LatteAdapter($this->getConfiguration()),
                 'plates' => new PlatesAdapter($this->getConfiguration()),
-                'blade' => new BladeAdapter($this->getConfiguration())
+                'blade' => new BladeAdapter($this->getConfiguration()),
             */
+            default => throw new \InvalidArgumentException("Unsupported template engine: $engine"),
         };
     }
 

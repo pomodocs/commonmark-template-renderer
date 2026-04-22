@@ -56,9 +56,10 @@ final class TemplateRendererExtension implements ConfigurableExtensionInterface
     {
         return match ($engine) {
             'twig' => \Twig\Environment::class,
-            'latte' => \Latte\Engine::class,
-            'plates' => \League\Plates\Engine::class,
-            'blade' => \bladeone\BladeOne::class,
+            'latte' => \Latte\Engine::class, // @phpstan-ignore class.notFound
+            'plates' => \League\Plates\Engine::class, // @phpstan-ignore class.notFound
+            'blade' => \bladeone\BladeOne::class, // @phpstan-ignore class.notFound
+            default => throw new \InvalidArgumentException("Unsupported template engine: $engine"),
         };
     }
 
@@ -75,6 +76,7 @@ final class TemplateRendererExtension implements ConfigurableExtensionInterface
             'latte' => 'latte/latte',
             'plates' => 'league/plates',
             'blade' => 'eftec/bladeone',
+            default => throw new \InvalidArgumentException("Unsupported template engine: $engine"),
         };
     }
 }
