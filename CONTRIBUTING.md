@@ -11,7 +11,7 @@ To avoid conflicts between dependencies, we use Phive to install the development
 
 ## Workflow
 
-1. Fork [pomodocs/commonmark-template-rendererr](https://github.com/pomodocs/commonmark-template-rendererr) repository.
+1. Fork [pomodocs/commonmark-template-renderer](https://github.com/pomodocs/commonmark-template-renderer) repository.
 2. Install all the dependencies via Composer: `composer install`.
 3. Install the development tools in `tools` directory via Phive: `phive install`.
 4. Run the test suite by `composer test` command and fix all red tests.
@@ -26,7 +26,7 @@ To avoid conflicts between dependencies, we use Phive to install the development
 
 While developing, the test part is very important: if you apply a patch to the existing code, the test suite must run without errors or failures and if you add a new functionality, no one will consider it without tests.
 
-Our test tool is [PhpUnit](https://phpunit.de/) and we provide a script to launch it:
+Our test tool is [Pest](https://pestphp.com/) and we provide a script to launch it:
 
 ```bash
 composer test
@@ -34,7 +34,9 @@ composer test
 
 ## Code Coverage
 
-We provide two commands to generate the code coverage report in _html_ or _xml_ format:
+We provide two commands to generate the code coverage report in _html_ or _xml_ format or ptint it to the console:
+
+-  `composer coverage` command prints a simple code coverage report to the console.
 
 -  `composer coverage:html` command generates a code coverage report in _html_ format, into the directory `coverage/`
 -  `composer coverage:clover` generates the report in _xml_ format, into `clover.xml` file.

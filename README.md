@@ -4,15 +4,17 @@
 
 ![Tests](https://github.com/pomodocs/commonmark-template-renderer/actions/workflows/test.yml/badge.svg)
 ![GitHub](https://img.shields.io/github/license/pomodocs/commonmark-template-renderer)
+[![Maintainability](https://qlty.sh/gh/pomodocs/projects/commonmark-template-renderer/maintainability.svg)](https://qlty.sh/gh/pomodocs/projects/commonmark-template-renderer)
+[![Code Coverage](https://qlty.sh/gh/pomodocs/projects/commonmark-template-renderer/coverage.svg)](https://qlty.sh/gh/pomodocs/projects/commonmark-template-renderer)
 
 CommonMark Template Renderer Extension is an extension for [League CommonmMark](https://commonmark.thephpleague.com/) to render the html elements via your favorite template engine.
 
 Currently supported:
 
--  Twig
--  Latte
--  Blade
--  Smarty
+-  [x] [Twig](https://twig.symfony.com/)
+-  [] [Latte](https://latte.nette.org/)
+-  [] [Blade](https://github.com/EFTEC/BladeOne)
+-  [] [Plates](https://platesphp.com/)
 
 
 ## Issues
