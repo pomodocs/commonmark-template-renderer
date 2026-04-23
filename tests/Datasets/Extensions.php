@@ -27,7 +27,7 @@ MARKDOWN
 ]);
 
 dataset('footnotes', [
-<<<MARKDOWN
+    <<<MARKDOWN
 This is a footnote reference,[^1] and another.[^longnote]
 
 [^1]: Here is the footnote.
@@ -40,7 +40,7 @@ This is a footnote reference,[^1] and another.[^longnote]
             print("Hello, world!")
         ```
 
-MARKDOWN
+MARKDOWN,
 ]);
 
 dataset('front_matter', [<<<MARKDOWN

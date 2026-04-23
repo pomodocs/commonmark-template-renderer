@@ -129,14 +129,15 @@ it('renders embedded content, via Embed Extension', function () {
     $env->addExtension(new EmbedExtension());
 
     $twigConverter = new TemplateConverter($env);
-    $stdConverter = new CommonMarkConverter([
-        'html_input' => 'escape',
-        'embed' => [
-            'adapter' => $adapter,
-            'allowed_domains' => ['youtube.com', 'twitter.com', 'github.com'],
-            'fallback' => 'link',
-            ]
-        ]
+    $stdConverter = new CommonMarkConverter(
+        [
+            'html_input' => 'escape',
+            'embed' => [
+                'adapter' => $adapter,
+                'allowed_domains' => ['youtube.com', 'twitter.com', 'github.com'],
+                'fallback' => 'link',
+            ],
+        ],
     );
     $stdConverter->getEnvironment()->addExtension(new EmbedExtension());
 
@@ -162,7 +163,7 @@ it('renders a footnotes list, via Footnotes Extension', function (string $markdo
     expect($expected)->toBe($actual);
 })->with('footnotes');
 
-it('renders markdown with a front matter', function(string $markdown) {
+it('renders markdown with a front matter', function (string $markdown) {
     $this->stdConverter->getEnvironment()->addExtension(new FrontMatterExtension());
     $this->twigConverter->getEnvironment()->addExtension(new FrontMatterExtension());
 
@@ -172,7 +173,7 @@ it('renders markdown with a front matter', function(string $markdown) {
     expect($expected)->toBe($actual);
 })->with('front_matter');
 
-it('renders markdown with heading permalinks', function(string $markdown) {
+it('renders markdown with heading permalinks', function (string $markdown) {
     $this->stdConverter->getEnvironment()->addExtension(new HeadingPermalinkExtension());
     $this->twigConverter->getEnvironment()->addExtension(new HeadingPermalinkExtension());
 
@@ -182,7 +183,7 @@ it('renders markdown with heading permalinks', function(string $markdown) {
     expect($expected)->toBe($actual);
 })->with(["# Heading 1\n\n## Heading 2\n\n### Heading 3\n"]);
 
-it('renders markdown with Highlight Extension', function(string $markdown) {
+it('renders markdown with Highlight Extension', function (string $markdown) {
     $this->stdConverter->getEnvironment()->addExtension(new HighlightExtension());
     $this->twigConverter->getEnvironment()->addExtension(new HighlightExtension());
 
@@ -192,7 +193,7 @@ it('renders markdown with Highlight Extension', function(string $markdown) {
     expect($expected)->toBe($actual);
 })->with(["I need to highlight these ==very important words==."]);
 
-it('renders markdown with Mention Extension', function(string $markdown) {
+it('renders markdown with Mention Extension', function (string $markdown) {
     $this->stdConverter->getEnvironment()->addExtension(new MentionExtension());
     $this->twigConverter->getEnvironment()->addExtension(new MentionExtension());
 
@@ -202,7 +203,7 @@ it('renders markdown with Mention Extension', function(string $markdown) {
     expect($expected)->toBe($actual);
 })->with(["Please, ask @cristianoc72 about that"]);
 
-it('renders markdown with Strikethrough Extension', function(string $markdown) {
+it('renders markdown with Strikethrough Extension', function (string $markdown) {
     $this->stdConverter->getEnvironment()->addExtension(new StrikethroughExtension());
     $this->twigConverter->getEnvironment()->addExtension(new StrikethroughExtension());
 
@@ -212,7 +213,7 @@ it('renders markdown with Strikethrough Extension', function(string $markdown) {
     expect($expected)->toBe($actual);
 })->with(["This extension is ~~really good~~ great!"]);
 
-it('renders markdown with Table of Contents Extension', function(string $markdown) {
+it('renders markdown with Table of Contents Extension', function (string $markdown) {
     $this->twigConverter->getEnvironment()->addExtension(new TableOfContentsExtension());
     $this->twigConverter->getEnvironment()->addExtension(new HeadingPermalinkExtension());
     $this->stdConverter->getEnvironment()->addExtension(new TableOfContentsExtension());
@@ -225,7 +226,7 @@ it('renders markdown with Table of Contents Extension', function(string $markdow
     expect(str_replace("\n", "", $expected))->toBe(str_replace("\n", "", $actual));
 })->with('toc');
 
-it('renders markdown with tables, via Table Extension', function(string $markdown) {
+it('renders markdown with tables, via Table Extension', function (string $markdown) {
     $this->twigConverter->getEnvironment()->addExtension(new TableExtension());
     $this->stdConverter->getEnvironment()->addExtension(new TableExtension());
 
@@ -235,7 +236,7 @@ it('renders markdown with tables, via Table Extension', function(string $markdow
     expect($expected)->toBe($actual);
 })->with('tables');
 
-it('renders markdown with task lists, via Task List Extension', function(string $markdown) {
+it('renders markdown with task lists, via Task List Extension', function (string $markdown) {
     $this->twigConverter->getEnvironment()->addExtension(new TaskListExtension());
     $this->stdConverter->getEnvironment()->addExtension(new TaskListExtension());
 

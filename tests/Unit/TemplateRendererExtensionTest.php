@@ -147,7 +147,7 @@ it("gets the template library repository", function (string $engine, string $exp
     $extension = new TemplateRendererExtension();
     $method = new ReflectionMethod(TemplateRendererExtension::class, 'getEnginePackage');
     $enginePackage = $method->invoke($extension, $engine);
-    
+
     expect($enginePackage)->toBe($expectedPackage);
 })->with([['twig', 'twig/twig'], ['latte', 'latte/latte'], ['plates', 'league/plates'], ['blade', 'eftec/bladeone']]);
 
@@ -155,7 +155,7 @@ it("gets the template library class name", function (string $engine, string $exp
     $extension = new TemplateRendererExtension();
     $method = new ReflectionMethod(TemplateRendererExtension::class, 'getEngineClass');
     $engineClass = $method->invoke($extension, $engine);
-    
+
     expect($engineClass)->toBe($expectedClass);
 })->with([['twig', \Twig\Environment::class], ['latte', \Latte\Engine::class], ['plates', \League\Plates\Engine::class], ['blade', \bladeone\BladeOne::class]]);
 

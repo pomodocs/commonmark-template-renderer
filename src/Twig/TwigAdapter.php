@@ -168,7 +168,7 @@ final class TwigAdapter implements AdapterInterface
 
         return $this->twig->render(
             $this->getTemplateName($node),
-            ['node' => $node, 'configuration' => $this->configuration]
+            ['node' => $node, 'configuration' => $this->configuration],
         );
     }
 
@@ -180,9 +180,9 @@ final class TwigAdapter implements AdapterInterface
     private function getTemplateName(Node $node): string
     {
         $array = explode('\\', get_class($node));
-        $nodeClass = trim(array_pop($array), '-_' );
+        $nodeClass = trim(array_pop($array), '-_');
         $nodeClass = (string) preg_replace('/\s+/', ' ', $nodeClass);
-		$nodeClass = str_replace([' ', '-'], '_', $nodeClass);
+        $nodeClass = str_replace([' ', '-'], '_', $nodeClass);
         $templateName = mb_strtolower((string) preg_replace('/([a-z0-9])([A-Z])/', '$1_$2', $nodeClass));
 
         return "$templateName.html.twig";

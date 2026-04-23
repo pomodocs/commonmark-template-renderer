@@ -28,9 +28,7 @@ use PomoDocs\CommonMark\Alert\Node\Block\Alert;
  */
 final class NodeNormalizer
 {
-    public function __construct(private ConfigurationInterface $configuration)
-    {
-    }
+    public function __construct(private ConfigurationInterface $configuration) {}
 
     /**
      * Normalizes a node for template rendering.
@@ -165,11 +163,11 @@ final class NodeNormalizer
         $class = $this->configuration->get('footnote/footnote_class');
         /** @var string $idPrefix */
         $idPrefix = $this->configuration->get('footnote/footnote_id_prefix');
-        
+
         $node->data->append('attributes/class', $class);
         $node->data->set('attributes/id', $idPrefix . \mb_strtolower($node->getReference()->getLabel(), 'UTF-8'));
         $node->data->set('attributes/role', 'doc-endnote');
-        
+
         return $node;
     }
 
@@ -202,12 +200,12 @@ final class NodeNormalizer
         /** @var string $fragmentPrefix */
         $fragmentPrefix = $this->configuration->get('heading_permalink/fragment_prefix');
         $fragmentPrefix = $fragmentPrefix !== '' ? $fragmentPrefix . '-' : '';
-        
+
         if (! $this->configuration->get('heading_permalink/apply_id_to_heading')) {
             /** @var string $idPrefix */
             $idPrefix = $this->configuration->get('heading_permalink/id_prefix');
             $idPrefix = $idPrefix !== '' ? $idPrefix . '-' : '';
-            
+
             $node->data->set('attributes/id', $idPrefix . $slug);
         }
 
