@@ -32,6 +32,7 @@ final class TemplateRenderer implements DocumentRendererInterface, ChildNodeRend
 
     public function __construct(private EnvironmentInterface $environment)
     {
+        /** @var string $engine */
         $engine = $this->getConfiguration()->get('templateRenderer/engine');
         $this->engine = match ($engine) {
             'twig' => new TwigAdapter($this->getConfiguration()),

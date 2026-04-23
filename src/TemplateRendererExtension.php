@@ -28,6 +28,7 @@ final class TemplateRendererExtension implements ConfigurableExtensionInterface
             'engine' => Expect::anyOf('twig', 'latte', 'plates', 'blade')->default('twig'),
             'templates_dirs' => Expect::listOf('string')->default([]),
         ])->transform(function ($value, Context $context) {
+            /** @var \stdClass $value */
             if (!class_exists($this->getEngineClass($value->engine))) {
                 $context->addError("The template engine '{$value->engine}' is not available. Please install it by running `composer require {$this->getEnginePackage($value->engine)}`.", 'templateRenderer.engine');
             }

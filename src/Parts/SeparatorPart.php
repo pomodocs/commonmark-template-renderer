@@ -40,6 +40,7 @@ trait SeparatorPart
      */
     public function getBlockSeparator(): string
     {
+        /** @phpstan-ignore return.type */
         return $this->getConfiguration()->get('renderer/block_separator');
     }
 
@@ -50,6 +51,7 @@ trait SeparatorPart
      */
     public function getInnerSeparator(): string
     {
+        /** @phpstan-ignore return.type */
         return $this->getConfiguration()->get('renderer/inner_separator');
     }
 }

@@ -53,6 +53,7 @@ final class TwigAdapter implements AdapterInterface
     public function __construct(private ConfigurationInterface $configuration)
     {
         // Initialize Twig
+        /** @var array<string> $templatesDirs */
         $templatesDirs = $this->configuration->get('templateRenderer/templates_dirs');
         $loader = new FilesystemLoader($templatesDirs);
         $twig = new Environment($loader, [
@@ -128,8 +129,10 @@ final class TwigAdapter implements AdapterInterface
     {
         $output = '';
 
-        foreach ($node->data['attributes'] as $key => $value) {
-            $output .= ' ' . $key . '="' . (is_array($value) ? implode(' ', $value) : $value) . '"';
+        /** @var array<string, string|array<string>> $attributes */
+        $attributes = $node->data['attributes'];
+        foreach ($attributes as $key => $value) {
+            $output .= ' ' . $key . '="' . (is_array($value) ? (string) implode(' ', $value) : $value) . '"';
         }
 
         return $output;
@@ -178,9 +181,9 @@ final class TwigAdapter implements AdapterInterface
     {
         $array = explode('\\', get_class($node));
         $nodeClass = trim(array_pop($array), '-_' );
-        $nodeClass = preg_replace('/\s+/', ' ', $nodeClass);
+        $nodeClass = (string) preg_replace('/\s+/', ' ', $nodeClass);
 		$nodeClass = str_replace([' ', '-'], '_', $nodeClass);
-        $templateName = mb_strtolower(preg_replace('/([a-z0-9])([A-Z])/', '$1_$2', $nodeClass));
+        $templateName = mb_strtolower((string) preg_replace('/([a-z0-9])([A-Z])/', '$1_$2', $nodeClass));
 
         return "$templateName.html.twig";
     }
