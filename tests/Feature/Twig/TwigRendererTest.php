@@ -35,7 +35,7 @@ beforeEach(function () {
             'templateRenderer' => [
                 'engine' => 'twig',
                 'templates_dirs' => [
-                    $this->root->url(),
+                    $this->getRoot()->url(),
                 ],
             ],
         ],
@@ -115,7 +115,7 @@ it('renders embedded content, via Embed Extension', function () {
             'templateRenderer' => [
                 'engine' => 'twig',
                 'templates_dirs' => [
-                    $this->root->url(),
+                    $this->getRoot()->url(),
                 ],
             ],
             'embed' => [

@@ -24,7 +24,7 @@ it("configures the template renderer extension", function () {
             'templateRenderer' => [
                 'engine' => 'twig',
                 'templates_dirs' => [
-                    $this->root->url(),
+                    $this->getRoot()->url(),
                 ],
             ],
         ],
@@ -110,8 +110,8 @@ it("throws an error if a specified template directory does not exist", function 
             'templateRenderer' => [
                 'engine' => 'twig',
                 'templates_dirs' => [
-                    $this->root->url(),
-                    $this->root->url() . '/nonexistent_dir',
+                    $this->getRoot()->url(),
+                    $this->getRoot()->url() . '/nonexistent_dir',
                 ],
             ],
         ],
@@ -130,7 +130,7 @@ it("throws an error if the default template directory for the selected engine do
             'templateRenderer' => [
                 'engine' => 'twig',
                 'templates_dirs' => [
-                    $this->root->url(),
+                    $this->getRoot()->url(),
                     __DIR__ . '/../resources/templates/default/twig_nonexistent', // Non-existent default directory
                 ],
             ],

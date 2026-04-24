@@ -24,7 +24,7 @@ beforeEach(function () {
             'templateRenderer' => [
                 'engine' => 'twig',
                 'templates_dirs' => [
-                    $this->root->url(),
+                    $this->getRoot()->url(),
                 ],
             ],
         ],

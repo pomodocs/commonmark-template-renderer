@@ -10,15 +10,22 @@ use PHPUnit\Framework\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
-    public private(set) vfsStreamDirectory $root {
-        get => $this->root ??= vfsStream::setup('root');
+    private vfsStreamDirectory $root;
+
+    public function getRoot(): vfsStreamDirectory
+    {
+        if (!isset($this->root)) {
+            $this->root = vfsStream::setup('root');
+        }
+
+        return $this->root;
     }
 
     public function createFile(string $path, string $content = ''): void
     {
         $dirs = explode('/', $path);
         $fileName = array_pop($dirs);
-        $currentDir = $this->root;
+        $currentDir = $this->getRoot();
 
         foreach ($dirs as $dir) {
             if (!$currentDir->hasChild($dir)) {
