@@ -1,0 +1,69 @@
+# Run static analysis and coding standard checks 
+name: Static Analysis
+on: [push, pull_request]
+jobs:
+  install_tools:
+    name: Install tools
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Install tools
+        uses: ngmy/phive-install-action@master
+      - name: Upload tools to artifact store
+        uses: actions/upload-artifact@v4
+        with:
+          name: tools
+          path: tools
+  coding-standard:
+    name: coding-standard
+    needs: install_tools
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup PHP, with composer and extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.4
+          extensions: mbstring
+          coverage: none
+      - name: Install composer dependencies
+        uses: ramsey/composer-install@v3
+        with:
+          composer-options: "--prefer-dist --optimize-autoloader"
+      - name: Download tools from artifact store
+        uses: actions/download-artifact@v4
+        with:
+          name: tools
+          path: tools
+      - name: Set tools as executable
+        run: find tools -type f -print0 | xargs -0 chmod +x
+      - name: Check coding standard
+        run: composer cs:check
+  static-analysis:
+    name: static-analysis
+    needs: install_tools
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup PHP, with composer and extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.4
+          extensions: mbstring
+          coverage: none
+      - name: Install composer dependencies
+        uses: ramsey/composer-install@v3
+        with:
+          composer-options: "--prefer-dist --optimize-autoloader"
+      - name: Download tools from artifact store
+        uses: actions/download-artifact@v4
+        with:
+          name: tools
+          path: tools
+      - name: Set tools as executable
+        run: find tools -type f -print0 | xargs -0 chmod +x
+      - name: Static analysis tool
+        run: composer analytics
