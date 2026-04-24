@@ -12,9 +12,9 @@ CommonMark Template Renderer Extension is an extension for [League CommonmMark](
 Currently supported:
 
 -  [x] [Twig](https://twig.symfony.com/)
--  [] [Latte](https://latte.nette.org/)
--  [] [Blade](https://github.com/EFTEC/BladeOne)
--  [] [Plates](https://platesphp.com/)
+-  [ ] [Latte](https://latte.nette.org/)
+-  [ ] [Blade](https://github.com/EFTEC/BladeOne)
+-  [ ] [Plates](https://platesphp.com/)
 
 
 ## Issues

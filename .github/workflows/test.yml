@@ -22,7 +22,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: ["ubuntu-latest", "macOs-latest"]
-        php-versions: ["8.3", "8.4"]
+        php-versions: ["8.3", "8.4", "8.5"]
     runs-on: ${{ matrix.operating-system }}
     steps:
       - name: Checkout
@@ -42,7 +42,7 @@ jobs:
         with:
           name: tools
           path: tools
-      - name: Set tools as an executable
+      - name: Set tools as executable
         run: find tools -type f -print0 | xargs -0 chmod +x
       - name: Check coding standard
         run: composer cs:check
@@ -56,7 +56,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-versions: ["8.3", "8.4"]
+        php-versions: ["8.3", "8.4", "8.5"]
     runs-on: windows-latest
     steps:
       - name: Set autocrlf
